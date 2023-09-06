@@ -1,0 +1,23 @@
+name: Build Moonstream frontend
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "frontend/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.17.4"
+      - name: Check build
+        working-directory: ./frontend
+        run: |
+          yarn
+          yarn build

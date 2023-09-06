@@ -1,0 +1,30 @@
+name: Lint Moonstream backend
+
+on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "backend/**"
+      - "!backend/deploy/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Upgrade pip and setuptools
+        run: pip install --upgrade pip setuptools
+      - name: Install test requirements
+        working-directory: ./backend
+        run: pip install -e .[dev]
+      - name: Mypy type check
+        working-directory: ./backend
+        run: mypy moonstreamapi/
+      - name: Black syntax check
+        working-directory: ./backend
+        run: black --check moonstreamapi/
